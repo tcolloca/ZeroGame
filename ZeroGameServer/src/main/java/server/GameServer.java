@@ -17,10 +17,10 @@ public class GameServer {
   }
   
   public void start() throws IOException {
-    // Create a socket for the server port.
+    // Create a socket.
     DatagramSocket socket = new DatagramSocket(propsReader.getServerPort());
+    logger.atInfo().log("Opened socket on local port: %d", socket.getLocalPort());
    
-    logger.atInfo().log("Openning port: %d", socket.getLocalPort());
     
     boolean flag = true;
     

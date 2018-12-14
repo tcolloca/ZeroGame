@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
+import java.util.Locale;
 import java.util.Scanner;
 import com.google.common.flogger.FluentLogger;
 import util.PropertiesReader;
@@ -11,7 +12,7 @@ import util.PropertiesReader;
 public class GameClient {
 
   private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
+  
   private final PropertiesReader propsReader;
 
   public GameClient(PropertiesReader propsReader) {
@@ -19,15 +20,17 @@ public class GameClient {
   }
 
   public void start() throws IOException {
-    // Create a socket and connect it to the server.
+    // Create a socket.
     DatagramSocket socket = new DatagramSocket(propsReader.getClientPort());
-    socket.connect(
-        new InetSocketAddress(propsReader.getServerHostname(), propsReader.getServerPort()));
+    logger.atInfo().log("Opened socket on local port: %d", socket.getLocalPort());
 
-    logger.atInfo().log("Openning port: %d", socket.getLocalPort());
-    logger.atInfo().log("Connecting to server: %s:%d", socket.getInetAddress().getHostName(),
-        socket.getPort());
-    logger.atInfo().log("%s", socket.getInetAddress().toString());
+    // Connect to server.
+    String serverHostName = propsReader.getServerHostName();
+    int serverPort = propsReader.getServerPort();
+
+    logger.atInfo().log("Connecting to server: %s:%d ...", serverHostName, serverPort);
+    socket.connect(new InetSocketAddress(serverHostName, serverPort));
+    logger.atInfo().log("Connected");
 
     Scanner sc = new Scanner(System.in);
 
@@ -44,6 +47,8 @@ public class GameClient {
   }
 
   public static void main(String[] args) throws IOException {
+    Locale.setDefault(Locale.ENGLISH);
+    
     new GameClient(PropertiesReader.getInstance()).start();
   }
 }

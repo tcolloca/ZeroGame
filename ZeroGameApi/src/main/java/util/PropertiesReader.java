@@ -6,7 +6,7 @@ public class PropertiesReader {
 
   private static final String CONFIG_FILENAME = "config.properties";
   private static final String CONNECTION = "CONNECTION";
-  private static final String SERVER_HOSTNAME = "server_hostname";
+  private static final String SERVER_HOST_NAME = "server_host_name";
   private static final String SERVER_PORT = "server_port";
   private static final String CLIENT_PORT = "client_port";
   
@@ -32,7 +32,7 @@ public class PropertiesReader {
    return props.getInt(CONNECTION, CLIENT_PORT);
   }
   
-  public String getServerHostname() {
-    return props.getString(CONNECTION, SERVER_HOSTNAME);
+  public String getServerHostName() {
+    return props.getString(CONNECTION, SERVER_HOST_NAME);
   }
 }
